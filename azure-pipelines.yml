@@ -9,11 +9,6 @@ pool:
 steps:
 - task: NuGetToolInstaller@0
   displayName: 'NuGet install'
-  
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '**/Mono.Cecil.sln'
     
 - task: MSBuild@1
   inputs:
