@@ -6,30 +6,18 @@
 pool:
   vmImage: 'VS2017-Win2016'
 
-variables:
-  solution: 'Mono.Cecil.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'netstandard_Debug'
-
 steps:
 - task: NuGetToolInstaller@0
   displayName: 'NuGet install'
+  
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '$(solution)'
-- task: VSBuild@1
-  displayName: 'Build solution'
+    restoreSolution: '**/Mono.Cecil.sln'
+    
+- task: MSBuild@1
   inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    solution: '**/Mono.Cecil.sln'
 
-- task: VSTest@2
-  displayName: 'Run tests'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\*Tests.dll
-     !**\obj\**
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+- script: nunit-console.exe Mono.Cecil.nunit
+  displayName: 'tests'
